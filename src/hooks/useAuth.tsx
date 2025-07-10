@@ -1,14 +1,20 @@
 /**
  * Authentication Hook
- * 
+ *
  * Custom hook for managing authentication state and operations
  */
 
-import React, { useState, useEffect, useCallback, createContext, useContext } from 'react';
-import { apiClient } from '../api/client';
-import { logger } from '../utils/logger';
-import { env, isDev } from '../config/env';
-import * as SecureStore from 'expo-secure-store';
+import React, {
+  useState,
+  useEffect,
+  useCallback,
+  createContext,
+  useContext,
+} from "react";
+import { apiClient } from "../api/client";
+import { logger } from "../utils/logger";
+import { env, isDev } from "../config/env";
+import * as SecureStore from "expo-secure-store";
 
 interface User {
   id: string;
@@ -37,8 +43,8 @@ interface AuthContextType extends AuthState {
   clearError: () => void;
 }
 
-const TOKEN_STORAGE_KEY = 'auth_token';
-const USER_STORAGE_KEY = 'auth_user';
+const TOKEN_STORAGE_KEY = "auth_token";
+const USER_STORAGE_KEY = "auth_user";
 
 // Create context with default values
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -46,19 +52,15 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 // Provider component
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const auth = useProvideAuth();
-  
-  return (
-    <AuthContext.Provider value={auth}>
-      {children}
-    </AuthContext.Provider>
-  );
+
+  return <AuthContext.Provider value={auth}>{children}</AuthContext.Provider>;
 };
 
 // Hook for child components to get the auth object
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
@@ -85,7 +87,7 @@ function useProvideAuth(): AuthContextType {
         if (storedToken && storedUser) {
           const user = JSON.parse(storedUser) as User;
           apiClient.setAuthToken(storedToken);
-          
+
           setState({
             user,
             token: storedToken,
@@ -93,17 +95,17 @@ function useProvideAuth(): AuthContextType {
             isAuthenticated: true,
             error: null,
           });
-          
-          logger.info('Restored authentication from storage');
+
+          logger.info("Restored authentication from storage");
         } else {
-          setState(prev => ({ ...prev, isLoading: false }));
+          setState((prev) => ({ ...prev, isLoading: false }));
         }
       } catch (error) {
-        logger.error('Failed to load authentication from storage', error);
-        setState(prev => ({ 
-          ...prev, 
+        logger.error("Failed to load authentication from storage", error);
+        setState((prev) => ({
+          ...prev,
           isLoading: false,
-          error: 'Failed to restore session'
+          error: "Failed to restore session",
         }));
       }
     };
@@ -118,7 +120,7 @@ function useProvideAuth(): AuthContextType {
         SecureStore.setItemAsync(USER_STORAGE_KEY, JSON.stringify(user)),
       ]);
     } catch (error) {
-      logger.error('Failed to store authentication data', error);
+      logger.error("Failed to store authentication data", error);
     }
   };
 
@@ -129,45 +131,48 @@ function useProvideAuth(): AuthContextType {
         SecureStore.deleteItemAsync(USER_STORAGE_KEY),
       ]);
     } catch (error) {
-      logger.error('Failed to clear authentication data', error);
+      logger.error("Failed to clear authentication data", error);
     }
   };
 
   const login = useCallback(async (credentials: LoginCredentials) => {
-    setState(prev => ({ ...prev, isLoading: true, error: null }));
-    
+    setState((prev) => ({ ...prev, isLoading: true, error: null }));
+
     try {
       let token: string;
       let user: User;
-      
+
       if (isDev) {
         // Mock authentication for development
-        logger.debug('Using mock authentication for development');
-        
+        logger.debug("Using mock authentication for development");
+
         // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+
         // Create mock user and token
-        token = 'mock-token-' + Date.now();
+        token = "mock-token-" + Date.now();
         user = {
-          id: 'mock-user-id',
+          id: "mock-user-id",
           email: credentials.email,
-          name: credentials.email.split('@')[0] || 'User',
+          name: credentials.email.split("@")[0] || "User",
         };
-        
-        logger.debug('Mock login successful', { user });
+
+        logger.debug("Mock login successful", { user });
       } else {
         // Real API call for production
-        const response = await apiClient.post<{ token: string; user: User }>('/auth/login', credentials);
+        const response = await apiClient.post<{ token: string; user: User }>(
+          "/auth/login",
+          credentials
+        );
         ({ token, user } = response);
       }
-      
+
       // Set token in API client
       apiClient.setAuthToken(token);
-      
+
       // Store auth data securely
       await storeAuthData(token, user);
-      
+
       setState({
         user,
         token,
@@ -175,30 +180,30 @@ function useProvideAuth(): AuthContextType {
         isAuthenticated: true,
         error: null,
       });
-      
-      logger.info('User logged in successfully', { userId: user.id });
+
+      logger.info("User logged in successfully", { userId: user.id });
     } catch (error: any) {
-      logger.error('Login failed', error);
-      
-      setState(prev => ({ 
-        ...prev, 
-        isLoading: false, 
+      logger.error("Login failed", error);
+
+      setState((prev) => ({
+        ...prev,
+        isLoading: false,
         isAuthenticated: false,
-        error: error.message || 'Failed to login. Please try again.'
+        error: error.message || "Failed to login. Please try again.",
       }));
     }
   }, []);
 
   const logout = useCallback(async () => {
-    setState(prev => ({ ...prev, isLoading: true }));
-    
+    setState((prev) => ({ ...prev, isLoading: true }));
+
     try {
       // Clear token from API client
       apiClient.clearAuthToken();
-      
+
       // Clear stored auth data
       await clearStoredAuthData();
-      
+
       setState({
         user: null,
         token: null,
@@ -206,76 +211,82 @@ function useProvideAuth(): AuthContextType {
         isAuthenticated: false,
         error: null,
       });
-      
-      logger.info('User logged out successfully');
+
+      logger.info("User logged out successfully");
     } catch (error) {
-      logger.error('Logout failed', error);
-      
-      setState(prev => ({ 
-        ...prev, 
+      logger.error("Logout failed", error);
+
+      setState((prev) => ({
+        ...prev,
         isLoading: false,
-        error: 'Failed to logout. Please try again.'
+        error: "Failed to logout. Please try again.",
       }));
     }
   }, []);
 
-  const register = useCallback(async (userData: LoginCredentials & { name: string }) => {
-    setState(prev => ({ ...prev, isLoading: true, error: null }));
-    
-    try {
-      let token: string;
-      let user: User;
-      
-      if (isDev) {
-        // Mock authentication for development
-        logger.debug('Using mock authentication for development');
-        
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        // Create mock user and token
-        token = 'mock-token-' + Date.now();
-        user = {
-          id: 'mock-user-id',
-          email: userData.email,
-          name: userData.name,
-        };
-        
-        logger.debug('Mock registration successful', { user });
-      } else {
-        // Real API call for production
-        const response = await apiClient.post<{ token: string; user: User }>('/auth/register', userData);
-        ({ token, user } = response);
+  const register = useCallback(
+    async (userData: LoginCredentials & { name: string }) => {
+      setState((prev) => ({ ...prev, isLoading: true, error: null }));
+
+      try {
+        let token: string;
+        let user: User;
+
+        if (isDev) {
+          // Mock authentication for development
+          logger.debug("Using mock authentication for development");
+
+          // Simulate API delay
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+
+          // Create mock user and token
+          token = "mock-token-" + Date.now();
+          user = {
+            id: "mock-user-id",
+            email: userData.email,
+            name: userData.name,
+          };
+
+          logger.debug("Mock registration successful", { user });
+        } else {
+          // Real API call for production
+          const response = await apiClient.post<{ token: string; user: User }>(
+            "/auth/register",
+            userData
+          );
+          ({ token, user } = response);
+        }
+
+        // Set token in API client
+        apiClient.setAuthToken(token);
+
+        // Store auth data securely
+        await storeAuthData(token, user);
+
+        setState({
+          user,
+          token,
+          isLoading: false,
+          isAuthenticated: true,
+          error: null,
+        });
+
+        logger.info("User registered successfully", { userId: user.id });
+      } catch (error: any) {
+        logger.error("Registration failed", error);
+
+        setState((prev) => ({
+          ...prev,
+          isLoading: false,
+          error: error.message || "Failed to register. Please try again.",
+        }));
       }
-      
-      // Set token in API client
-      apiClient.setAuthToken(token);
-      
-      // Store auth data securely
-      await storeAuthData(token, user);
-      
-      setState({
-        user,
-        token,
-        isLoading: false,
-        isAuthenticated: true,
-        error: null,
-      });
-      
-      logger.info('User registered successfully', { userId: user.id });
-    } catch (error: any) {
-      logger.error('Registration failed', error);
-      
-      setState(prev => ({ 
-        ...prev, 
-        isLoading: false,
-        error: error.message || 'Failed to register. Please try again.'
-      }));
-    }
-  }, []);
+    },
+    []
+  );
 
   const clearError = useCallback(() => {
-    setState(prev => ({ ...prev, error: null }));
+    setState((prev) => ({ ...prev, error: null }));
   }, []);
 
   return {

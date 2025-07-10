@@ -1,59 +1,119 @@
-import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import React from "react";
+import { StyleSheet, View, Text } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 const Summary = () => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Current Balance</Text>
-      <Text style={styles.balance}>$1,234.56</Text>
-      <View style={styles.detailsContainer}>
-        <View style={styles.detail}>
-          <Text style={styles.detailTitle}>Income</Text>
-          <Text style={styles.detailAmount}>$5,000.00</Text>
-        </View>
-        <View style={styles.detail}>
-          <Text style={styles.detailTitle}>Expenses</Text>
-          <Text style={styles.detailAmount}>$3,765.44</Text>
+    <LinearGradient
+      colors={["#6366F1", "#8B5CF6", "#EC4899"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={styles.container}
+    >
+      <View style={styles.content}>
+        <Text style={styles.title}>Total Balance</Text>
+        <Text style={styles.balance}>$1,234.56</Text>
+        <Text style={styles.subtitle}>Available to spend</Text>
+
+        <View style={styles.statsContainer}>
+          <View style={styles.statItem}>
+            <View style={styles.iconContainer}>
+              <Text style={styles.icon}>↗️</Text>
+            </View>
+            <View style={styles.statContent}>
+              <Text style={styles.statLabel}>Income</Text>
+              <Text style={styles.statValue}>+$5,000.00</Text>
+            </View>
+          </View>
+
+          <View style={styles.divider} />
+
+          <View style={styles.statItem}>
+            <View style={styles.iconContainer}>
+              <Text style={styles.icon}>↙️</Text>
+            </View>
+            <View style={styles.statContent}>
+              <Text style={styles.statLabel}>Expenses</Text>
+              <Text style={styles.statValue}>-$3,765.44</Text>
+            </View>
+          </View>
         </View>
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
-    backgroundColor: '#fff',
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 3,
+    borderRadius: 24,
+    padding: 2,
+    marginBottom: 24,
+  },
+  content: {
+    backgroundColor: "rgba(31, 41, 55, 0.9)",
+    borderRadius: 22,
+    padding: 24,
+    alignItems: "center",
   },
   title: {
     fontSize: 16,
-    color: '#888',
+    color: "#E5E7EB",
+    fontWeight: "500",
+    marginBottom: 8,
   },
   balance: {
-    fontSize: 36,
-    fontWeight: 'bold',
-    marginVertical: 10,
+    fontSize: 42,
+    fontWeight: "bold",
+    color: "#FFFFFF",
+    marginBottom: 4,
   },
-  detailsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  detail: {
-    alignItems: 'center',
-  },
-  detailTitle: {
+  subtitle: {
     fontSize: 14,
-    color: '#888',
+    color: "#9CA3AF",
+    marginBottom: 24,
   },
-  detailAmount: {
+  statsContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    width: "100%",
+  },
+  statItem: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 12,
+  },
+  iconContainer: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 12,
+  },
+  icon: {
     fontSize: 18,
-    fontWeight: 'bold',
+  },
+  statContent: {
+    flex: 1,
+  },
+  statLabel: {
+    fontSize: 12,
+    color: "#9CA3AF",
+    fontWeight: "500",
+    marginBottom: 2,
+  },
+  statValue: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#FFFFFF",
+  },
+  divider: {
+    width: 1,
+    height: 40,
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    marginHorizontal: 8,
   },
 });
 

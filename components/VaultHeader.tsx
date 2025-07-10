@@ -1,26 +1,57 @@
-
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Text } from '@/components/Themed';
+import React from "react";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { Text } from "@/components/Themed";
 
 export default function VaultHeader() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Vault</Text>
+      <View style={styles.content}>
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>🔐 Vault</Text>
+          <Text style={styles.subtitle}>Secure your financial future</Text>
+        </View>
+        <TouchableOpacity style={styles.settingsButton}>
+          <Text style={styles.settingsIcon}>⚙️</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#000',
-    padding: 20,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    backgroundColor: "transparent",
+    paddingHorizontal: 20,
+    paddingVertical: 24,
+  },
+  content: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  titleContainer: {
+    flex: 1,
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: '#fff',
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "#F9FAFB",
+    marginBottom: 4,
+  },
+  subtitle: {
+    fontSize: 14,
+    color: "#9CA3AF",
+    fontWeight: "500",
+  },
+  settingsButton: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  settingsIcon: {
+    fontSize: 18,
   },
 });

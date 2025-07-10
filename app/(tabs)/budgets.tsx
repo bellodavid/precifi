@@ -1,7 +1,27 @@
-import BudgetList from '@/components/BudgetList';
+import { StyleSheet, View, StatusBar } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
+import BudgetList from "@/components/BudgetList";
 
 export default function BudgetsScreen() {
+  const insets = useSafeAreaInsets();
+
   return (
-    <BudgetList />
+    <View style={styles.container}>
+      <StatusBar barStyle="light-content" backgroundColor="#111827" />
+      <View style={[styles.content, { paddingTop: insets.top }]}>
+        <BudgetList />
+      </View>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#111827",
+  },
+  content: {
+    flex: 1,
+  },
+});
