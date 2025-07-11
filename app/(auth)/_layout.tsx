@@ -1,7 +1,7 @@
-import { Stack } from 'expo-router';
-import { StatusBar } from 'expo-status-bar';
-import { View } from 'react-native';
-import theme from '../../theme';
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
+import { View } from "react-native";
+import theme from "../../theme";
 
 export default function AuthLayout() {
   return (
@@ -11,7 +11,7 @@ export default function AuthLayout() {
         screenOptions={{
           headerShown: false,
           contentStyle: { backgroundColor: theme.colors.background },
-          animation: 'slide_from_right',
+          animation: "slide_from_right",
         }}
       >
         <Stack.Screen name="index" />

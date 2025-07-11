@@ -98,20 +98,30 @@ export default function TabLayout() {
 
       {/* Hidden routes - accessible but not shown in tab bar */}
       <Tabs.Screen
+        name="add-budget"
+        options={{
+          title: "Add Budget",
+          href: null, // This hides the tab but keeps the route accessible
+        }}
+      />
+      <Tabs.Screen
         name="lock-funds"
         options={{
+          title: "Lock Funds",
           href: null, // This hides the tab but keeps the route accessible
         }}
       />
       <Tabs.Screen
         name="add-transaction"
         options={{
+          title: "Add Transaction",
           href: null, // This hides the tab but keeps the route accessible
         }}
       />
       <Tabs.Screen
         name="transactions"
         options={{
+          title: "Transactions",
           href: null, // This hides the tab but keeps the route accessible
           headerShown: false,
         }}

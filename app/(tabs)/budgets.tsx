@@ -1,4 +1,4 @@
-import { StyleSheet, View, StatusBar } from "react-native";
+import { StyleSheet, View, StatusBar, Text } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import BudgetList from "@/components/BudgetList";
@@ -19,7 +19,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#111827",
   },
-  content: {
-    flex: 1,
+  header: {
+    paddingHorizontal: 20,
+    paddingBottom: 20,
+    backgroundColor: "#111827",
+  },
+  headerTitle: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "#F9FAFB",
   },
 });

@@ -21,7 +21,7 @@ export default function DashboardScreen() {
       {/* Fixed Welcome Header */}
       <View style={[styles.welcomeHeader, { paddingTop: insets.top + 20 }]}>
         <Text style={styles.welcomeText}>Welcome back,</Text>
-        <Text style={styles.userName}>John Doe</Text>
+        <Text style={styles.userName}>David</Text>
       </View>
 
       {/* Scrollable Content */}

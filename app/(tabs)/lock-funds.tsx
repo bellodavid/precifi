@@ -12,7 +12,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Button, TextInput } from "../../components/ui";
 
 export default function LockFundsScreen() {
-  const [amount, setAmount] = useState("");
+  const [lockAmount, setLockAmount] = useState("");
+  const [releaseAmount, setReleaseAmount] = useState("");
   const [frequency, setFrequency] = useState("weekly");
   const insets = useSafeAreaInsets();
 
@@ -23,17 +24,40 @@ export default function LockFundsScreen() {
   ];
 
   const handleLockFunds = () => {
-    if (!amount || parseFloat(amount) <= 0) {
-      Alert.alert("Error", "Please enter a valid amount");
+    if (!lockAmount || parseFloat(lockAmount) <= 0) {
+      Alert.alert("Error", "Please enter a valid amount to lock");
       return;
     }
 
+    if (!releaseAmount || parseFloat(releaseAmount) <= 0) {
+      Alert.alert("Error", "Please enter a valid release amount");
+      return;
+    }
+
+    if (parseFloat(releaseAmount) > parseFloat(lockAmount)) {
+      Alert.alert("Error", "Release amount cannot be greater than lock amount");
+      return;
+    }
+
+    const totalReleaseTime = Math.ceil(
+      parseFloat(lockAmount) / parseFloat(releaseAmount)
+    );
+    const timeUnit =
+      frequency === "daily"
+        ? "days"
+        : frequency === "weekly"
+        ? "weeks"
+        : "months";
+
     Alert.alert(
-      "Lock Funds",
-      `Are you sure you want to lock $${amount} ${frequency}?`,
+      "Lock Funds Configuration",
+      `Lock Amount: $${lockAmount}\nRelease: $${releaseAmount} ${frequency}\nTotal Release Time: ~${totalReleaseTime} ${timeUnit}\n\nOnce locked, you can only access the configured release amount. Continue?`,
       [
         { text: "Cancel", style: "cancel" },
-        { text: "Lock", onPress: () => console.log("Funds locked") },
+        {
+          text: "Lock Funds",
+          onPress: () => console.log("Funds locked with release config"),
+        },
       ]
     );
   };
@@ -42,14 +66,12 @@ export default function LockFundsScreen() {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#111827" />
       <ScrollView
-        style={[styles.scrollContainer, { paddingTop: insets.top }]}
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.header}>
-          <Text style={styles.title}>🔒 Lock Funds</Text>
           <Text style={styles.subtitle}>
-            Set up automated fund locking to build your savings
+            Configure fund locking with automatic release to your main wallet
           </Text>
         </View>
 
@@ -57,16 +79,25 @@ export default function LockFundsScreen() {
           <View style={styles.inputSection}>
             <Text style={styles.label}>Amount to Lock</Text>
             <TextInput
-              placeholder="Enter amount (e.g., 100)"
+              placeholder="Enter amount to lock (e.g., 1000)"
               keyboardType="numeric"
-              value={amount}
-              onChangeText={setAmount}
-              style={styles.input}
+              value={lockAmount}
+              onChangeText={setLockAmount}
+            />
+          </View>
+
+          <View style={styles.inputSection}>
+            <Text style={styles.label}>Release Amount</Text>
+            <TextInput
+              placeholder="Enter release amount (e.g., 100)"
+              keyboardType="numeric"
+              value={releaseAmount}
+              onChangeText={setReleaseAmount}
             />
           </View>
 
           <View style={styles.frequencySection}>
-            <Text style={styles.label}>Lock Frequency</Text>
+            <Text style={styles.label}>Release Frequency</Text>
             <View style={styles.frequencyButtons}>
               {frequencies.map((freq) => (
                 <TouchableOpacity
@@ -93,24 +124,30 @@ export default function LockFundsScreen() {
           </View>
 
           <View style={styles.summarySection}>
-            <Text style={styles.summaryTitle}>Summary</Text>
+            <Text style={styles.summaryTitle}>Lock Configuration</Text>
             <View style={styles.summaryCard}>
               <View style={styles.summaryRow}>
-                <Text style={styles.summaryLabel}>Amount:</Text>
-                <Text style={styles.summaryValue}>${amount || "0.00"}</Text>
+                <Text style={styles.summaryLabel}>Lock Amount:</Text>
+                <Text style={styles.summaryValue}>${lockAmount || "0.00"}</Text>
               </View>
               <View style={styles.summaryRow}>
-                <Text style={styles.summaryLabel}>Frequency:</Text>
+                <Text style={styles.summaryLabel}>Release Amount:</Text>
+                <Text style={styles.summaryValue}>
+                  ${releaseAmount || "0.00"}
+                </Text>
+              </View>
+              <View style={styles.summaryRow}>
+                <Text style={styles.summaryLabel}>Release Frequency:</Text>
                 <Text style={styles.summaryValue}>{frequency}</Text>
               </View>
               <View style={styles.summaryDivider} />
               <View style={styles.summaryRow}>
-                <Text style={styles.summaryLabel}>Total per month:</Text>
+                <Text style={styles.summaryLabel}>Monthly Release:</Text>
                 <Text style={styles.summaryHighlight}>
                   $
-                  {amount
+                  {releaseAmount
                     ? (
-                        parseFloat(amount) *
+                        parseFloat(releaseAmount) *
                         (frequency === "daily"
                           ? 30
                           : frequency === "weekly"
@@ -120,11 +157,38 @@ export default function LockFundsScreen() {
                     : "0.00"}
                 </Text>
               </View>
+              <View style={styles.summaryRow}>
+                <Text style={styles.summaryLabel}>Total Release Time:</Text>
+                <Text style={styles.summaryInfo}>
+                  {lockAmount && releaseAmount && parseFloat(releaseAmount) > 0
+                    ? `~${Math.ceil(
+                        parseFloat(lockAmount) / parseFloat(releaseAmount)
+                      )} ${
+                        frequency === "daily"
+                          ? "days"
+                          : frequency === "weekly"
+                          ? "weeks"
+                          : "months"
+                      }`
+                    : "N/A"}
+                </Text>
+              </View>
             </View>
           </View>
 
+          <View style={styles.noteSection}>
+            <Text style={styles.noteTitle}>💡 How it works:</Text>
+            <Text style={styles.noteText}>
+              • Your locked funds will be secured and inaccessible{"\n"}• Only
+              the configured release amount will be sent to your main wallet
+              {"\n"}• Releases happen automatically based on your chosen
+              frequency{"\n"}• This helps you save while maintaining controlled
+              access to funds
+            </Text>
+          </View>
+
           <Button
-            title="Lock Funds"
+            title="Lock Funds with Release Config"
             onPress={handleLockFunds}
             style={styles.button}
             variant="primary"
@@ -171,16 +235,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     color: "#F9FAFB",
     marginBottom: 12,
-  },
-  input: {
-    backgroundColor: "#1F2937",
-    borderRadius: 16,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    fontSize: 16,
-    color: "#F9FAFB",
-    borderWidth: 1,
-    borderColor: "rgba(75, 85, 99, 0.3)",
   },
   frequencySection: {
     marginBottom: 24,
@@ -255,6 +309,30 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#6366F1",
     fontWeight: "bold",
+  },
+  summaryInfo: {
+    fontSize: 14,
+    color: "#F59E0B",
+    fontWeight: "600",
+  },
+  noteSection: {
+    backgroundColor: "#1F2937",
+    borderRadius: 16,
+    padding: 16,
+    marginBottom: 24,
+    borderWidth: 1,
+    borderColor: "rgba(75, 85, 99, 0.3)",
+  },
+  noteTitle: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#F9FAFB",
+    marginBottom: 8,
+  },
+  noteText: {
+    fontSize: 14,
+    color: "#9CA3AF",
+    lineHeight: 20,
   },
   button: {
     borderRadius: 16,

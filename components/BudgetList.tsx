@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
+import { useRouter } from "expo-router";
 
 interface Budget {
   id: string;
@@ -70,8 +71,13 @@ const budgets: Budget[] = [
 
 const BudgetList = () => {
   const [selectedPeriod, setSelectedPeriod] = useState("Monthly");
+  const router = useRouter();
 
   const periods = ["Weekly", "Monthly", "Yearly"];
+
+  const handleAddBudget = () => {
+    router.push("/add-budget");
+  };
 
   const totalBudget = budgets.reduce((sum, budget) => sum + budget.amount, 0);
   const totalSpent = budgets.reduce((sum, budget) => sum + budget.spent, 0);
@@ -223,7 +229,11 @@ const BudgetList = () => {
       </View>
 
       <View style={styles.addButtonContainer}>
-        <TouchableOpacity style={styles.addBudgetButton} activeOpacity={0.8}>
+        <TouchableOpacity
+          style={styles.addBudgetButton}
+          activeOpacity={0.8}
+          onPress={handleAddBudget}
+        >
           <Text style={styles.addButtonText}>+ Add New Budget</Text>
         </TouchableOpacity>
       </View>

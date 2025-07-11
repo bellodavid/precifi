@@ -7,9 +7,9 @@ import {
   ScrollView,
   StatusBar,
   Alert,
+  View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { View } from "@/components/Themed";
 import { Button } from "../../components/ui";
 
 const categories = [
@@ -60,12 +60,12 @@ export default function AddTransactionScreen() {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#111827" />
       <ScrollView
-        style={[styles.scrollContainer, { paddingTop: insets.top }]}
+    
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.header}>
-          <Text style={styles.title}>💳 Add Transaction</Text>
+          <Text style={styles.title}>Transaction</Text>
           <Text style={styles.subtitle}>Record your income and expenses</Text>
         </View>
 
@@ -158,7 +158,7 @@ export default function AddTransactionScreen() {
           </View>
 
           <Button
-            title="Add Transaction"
+            title="Transaction"
             onPress={handleAddTransaction}
             style={styles.addButton}
             variant="primary"
