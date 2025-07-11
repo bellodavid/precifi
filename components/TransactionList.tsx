@@ -8,6 +8,7 @@ import {
   TextInput,
 } from "react-native";
 import { Link } from "expo-router";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface Transaction {
   id: string;
@@ -93,6 +94,7 @@ const transactions: Transaction[] = [
 const TransactionList = () => {
   const [searchText, setSearchText] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("All");
+  const insets = useSafeAreaInsets();
 
   const filters = ["All", "Income", "Expenses"];
 
@@ -155,7 +157,7 @@ const TransactionList = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>💳 Transactions</Text>
+        <Text style={styles.title}>Transactions</Text>
         <Text style={styles.subtitle}>Track your financial activity</Text>
       </View>
 

@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { FontAwesome } from "@expo/vector-icons";
 
 const Summary = () => {
   return (
@@ -18,7 +19,7 @@ const Summary = () => {
         <View style={styles.statsContainer}>
           <View style={styles.statItem}>
             <View style={styles.iconContainer}>
-              <Text style={styles.icon}>↗️</Text>
+              <FontAwesome name="arrow-up" size={16} color="#10B981" />
             </View>
             <View style={styles.statContent}>
               <Text style={styles.statLabel}>Income</Text>
@@ -30,7 +31,7 @@ const Summary = () => {
 
           <View style={styles.statItem}>
             <View style={styles.iconContainer}>
-              <Text style={styles.icon}>↙️</Text>
+              <FontAwesome name="arrow-down" size={16} color="#EF4444" />
             </View>
             <View style={styles.statContent}>
               <Text style={styles.statLabel}>Expenses</Text>
@@ -91,9 +92,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginRight: 12,
-  },
-  icon: {
-    fontSize: 18,
   },
   statContent: {
     flex: 1,

@@ -6,6 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
+import { useRouter } from "expo-router";
 
 interface Transaction {
   id: string;
@@ -54,6 +55,11 @@ const transactions: Transaction[] = [
 ];
 
 const RecentTransactions = () => {
+  const router = useRouter();
+
+  const handleSeeAll = () => {
+    router.push("/transactions");
+  };
   const renderItem = ({ item }: { item: Transaction }) => (
     <TouchableOpacity style={styles.transactionItem} activeOpacity={0.7}>
       <View style={styles.leftContent}>
@@ -87,7 +93,7 @@ const RecentTransactions = () => {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Recent Transactions</Text>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleSeeAll}>
           <Text style={styles.seeAll}>See All</Text>
         </TouchableOpacity>
       </View>

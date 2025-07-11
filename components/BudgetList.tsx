@@ -139,7 +139,6 @@ const BudgetList = () => {
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.header}>
-        <Text style={styles.title}>📊 Budgets</Text>
         <Text style={styles.subtitle}>Track your spending goals</Text>
       </View>
 

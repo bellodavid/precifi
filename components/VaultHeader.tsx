@@ -7,7 +7,7 @@ export default function VaultHeader() {
     <View style={styles.container}>
       <View style={styles.content}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>🔐 Vault</Text>
+          <Text style={styles.title}>Vault</Text>
           <Text style={styles.subtitle}>Secure your financial future</Text>
         </View>
         <TouchableOpacity style={styles.settingsButton}>

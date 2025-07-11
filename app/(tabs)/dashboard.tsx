@@ -1,4 +1,11 @@
-import { StyleSheet, ScrollView, StatusBar, View } from "react-native";
+import {
+  StyleSheet,
+  ScrollView,
+  StatusBar,
+  View,
+  Text,
+  Platform,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import Summary from "@/components/Summary";
@@ -10,8 +17,15 @@ export default function DashboardScreen() {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#111827" />
+
+      {/* Fixed Welcome Header */}
+      <View style={[styles.welcomeHeader, { paddingTop: insets.top + 20 }]}>
+        <Text style={styles.welcomeText}>Welcome back,</Text>
+        <Text style={styles.userName}>John Doe</Text>
+      </View>
+
+      {/* Scrollable Content */}
       <ScrollView
-        style={[styles.scrollContainer, { paddingTop: insets.top }]}
         contentContainerStyle={styles.contentContainer}
         showsVerticalScrollIndicator={false}
       >
@@ -30,8 +44,25 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flex: 1,
   },
+  welcomeHeader: {
+    paddingHorizontal: 20,
+    paddingBottom: 16,
+    backgroundColor: "#111827",
+  },
+  welcomeText: {
+    fontSize: 16,
+    color: "#9CA3AF",
+    fontWeight: "500",
+    marginBottom: 4,
+  },
+  userName: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "#F9FAFB",
+  },
   contentContainer: {
     padding: 20,
+    paddingTop: 0,
     paddingBottom: 100, // Space for tab bar
   },
 });

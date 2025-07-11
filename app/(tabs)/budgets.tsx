@@ -9,9 +9,7 @@ export default function BudgetsScreen() {
   return (
     <View style={styles.container}>
       <StatusBar barStyle="light-content" backgroundColor="#111827" />
-      <View style={[styles.content, { paddingTop: insets.top }]}>
-        <BudgetList />
-      </View>
+      <BudgetList />
     </View>
   );
 }

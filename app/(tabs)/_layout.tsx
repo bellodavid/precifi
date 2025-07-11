@@ -2,6 +2,7 @@ import React from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, Tabs } from "expo-router";
 import { Pressable, Platform } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import Colors from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
@@ -12,11 +13,12 @@ function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>["name"];
   color: string;
 }) {
-  return <FontAwesome size={22} style={{ marginBottom: -3 }} {...props} />;
+  return <FontAwesome size={22} {...props} />;
 }
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  const insets = useSafeAreaInsets();
 
   return (
     <Tabs
@@ -27,25 +29,25 @@ export default function TabLayout() {
         tabBarStyle: {
           backgroundColor: "#1F2937", // Dark background
           borderTopWidth: 0,
-          elevation: 0,
-          shadowOpacity: 0,
-          height: Platform.OS === "ios" ? 88 : 64,
-          paddingBottom: Platform.OS === "ios" ? 24 : 8,
-          paddingTop: 8,
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
-          position: "absolute",
-          left: 0,
-          right: 0,
-          bottom: 0,
+          elevation: 8,
+          shadowOpacity: 0.1,
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: -2 },
+          shadowRadius: 4,
+          height: Platform.OS === "ios" ? 88 : 60,
+          paddingBottom:
+            Platform.OS === "ios" ? Math.max(insets.bottom, 24) : 0,
+          paddingTop: Platform.OS === "ios" ? 8 : 8,
         },
+        tabBarHideOnKeyboard: true,
         tabBarLabelStyle: {
           fontSize: 12,
           fontWeight: "600",
-          marginBottom: Platform.OS === "ios" ? 0 : 4,
+          marginBottom: Platform.OS === "ios" ? 0 : 2,
+          marginTop: Platform.OS === "ios" ? 0 : 2,
         },
         tabBarIconStyle: {
-          marginBottom: 4,
+          marginBottom: Platform.OS === "ios" ? 2 : 0,
         },
         headerStyle: {
           backgroundColor: "#111827",
@@ -64,32 +66,11 @@ export default function TabLayout() {
         name="dashboard"
         options={{
           title: "Dashboard",
+          headerShown: false,
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? "light"].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
         }}
       />
-      <Tabs.Screen
-        name="transactions"
-        options={{
-          title: "Transactions",
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="exchange" color={color} />
-          ),
-        }}
-      />
+
       <Tabs.Screen
         name="budgets"
         options={{
@@ -108,17 +89,31 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="add-transaction"
+        name="profile"
         options={{
-          title: "Add Transaction",
-          href: null,
+          title: "Profile",
+          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
         }}
       />
+
+      {/* Hidden routes - accessible but not shown in tab bar */}
       <Tabs.Screen
         name="lock-funds"
         options={{
-          title: "Lock Funds",
-          href: null,
+          href: null, // This hides the tab but keeps the route accessible
+        }}
+      />
+      <Tabs.Screen
+        name="add-transaction"
+        options={{
+          href: null, // This hides the tab but keeps the route accessible
+        }}
+      />
+      <Tabs.Screen
+        name="transactions"
+        options={{
+          href: null, // This hides the tab but keeps the route accessible
+          headerShown: false,
         }}
       />
     </Tabs>
