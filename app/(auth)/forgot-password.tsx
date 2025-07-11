@@ -7,9 +7,8 @@ import {
   Container, 
   TextInput, 
   Logo 
-} from '../../src/components/ui';
-import theme from '../../src/theme';
-import { AUTH_MESSAGES } from '../../src/constants/auth';
+} from '../../components/ui';
+import theme from '../../theme';
 
 export default function ForgotPasswordScreen() {
   const router = useRouter();

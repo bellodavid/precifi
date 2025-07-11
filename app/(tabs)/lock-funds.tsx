@@ -9,7 +9,7 @@ import {
   ScrollView,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Button, TextInput } from "@/src/components/ui";
+import { Button, TextInput } from "../../components/ui";
 
 export default function LockFundsScreen() {
   const [amount, setAmount] = useState("");

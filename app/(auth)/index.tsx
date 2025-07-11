@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Link, useRouter } from 'expo-router';
-import { Button, Container, Logo } from '../../src/components/ui';
-import theme from '../../src/theme';
+import { Button, Container, Logo } from '../../components/ui';
+import theme from '../../theme';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function WelcomeScreen() {
@@ -50,6 +50,7 @@ export default function WelcomeScreen() {
                 title="Log In" 
                 variant="text" 
                 style={styles.loginButton}
+                onPress={() => {}}
               />
             </Link>
           </View>
@@ -84,7 +85,7 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 100,
-    backgroundColor: theme.colors.dark.background.secondary,
+    backgroundColor: theme.colors.surface,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
     fontFamily: theme.typography.fontFamily.regular,
     color: theme.colors.dark.text.secondary,
     textAlign: 'center',
-    lineHeight: theme.typography.lineHeight.relaxed * theme.typography.fontSize.md,
+    lineHeight: theme.typography.fontSize.md * 1.5,
   },
   buttonContainer: {
     marginTop: theme.spacing.xl,

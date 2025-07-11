@@ -1,38 +1,40 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Link, useRouter } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import { 
-  Button, 
-  Container, 
-  TextInput, 
-  Divider, 
-  SocialButton, 
-  Logo 
-} from '../../src/components/ui';
-import theme from '../../src/theme';
-import { useAuth } from '../../src/hooks/useAuth';
+import React, { useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { Link, useRouter } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
+import {
+  Button,
+  Container,
+  TextInput,
+  Divider,
+  SocialButton,
+  Logo,
+} from "../../components/ui";
+import theme from "../../theme";
+import { useAuth } from "../../hooks/useAuth";
 
 export default function LoginScreen() {
   const router = useRouter();
   const { login, isLoading, error, clearError } = useAuth();
-  
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [socialLoading, setSocialLoading] = useState<string | undefined>(undefined);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [socialLoading, setSocialLoading] = useState<string | undefined>(
+    undefined
+  );
 
   const handleLogin = async () => {
     if (!email || !password) return;
-    await login({ email, password });
+    await login(email, password);
   };
 
-  const handleSocialLogin = async (provider: 'google' | 'facebook') => {
+  const handleSocialLogin = async (provider: "google" | "facebook") => {
     try {
       setSocialLoading(provider);
       // This would be implemented with actual social auth
       console.log(`Login with ${provider}`);
       // Simulate delay for demo purposes
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
     } catch (error) {
       console.error(`${provider} login error:`, error);
     } finally {
@@ -42,17 +44,14 @@ export default function LoginScreen() {
 
   return (
     <Container scrollable keyboardAvoiding>
-      <TouchableOpacity 
-        style={styles.backButton}
-        onPress={() => router.back()}
-      >
-        <Ionicons 
-          name="arrow-back" 
-          size={24} 
-          color={theme.colors.dark.text.primary} 
+      <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+        <Ionicons
+          name="arrow-back"
+          size={24}
+          color={theme.colors.dark.text.primary}
         />
       </TouchableOpacity>
-      
+
       <View style={styles.container}>
         <View style={styles.headerContainer}>
           <Logo size="large" />
@@ -71,14 +70,14 @@ export default function LoginScreen() {
             value={email}
             onChangeText={setEmail}
             leftIcon={
-              <Ionicons 
-                name="mail-outline" 
-                size={20} 
-                color={theme.colors.dark.text.tertiary} 
+              <Ionicons
+                name="mail-outline"
+                size={20}
+                color={theme.colors.dark.text.tertiary}
               />
             }
           />
-          
+
           <TextInput
             label="Password"
             placeholder="Enter your password"
@@ -86,21 +85,21 @@ export default function LoginScreen() {
             value={password}
             onChangeText={setPassword}
             leftIcon={
-              <Ionicons 
-                name="lock-closed-outline" 
-                size={20} 
-                color={theme.colors.dark.text.tertiary} 
+              <Ionicons
+                name="lock-closed-outline"
+                size={20}
+                color={theme.colors.dark.text.tertiary}
               />
             }
             error={error || undefined}
           />
-          
+
           <Link href="/forgot-password" asChild>
             <TouchableOpacity style={styles.forgotPasswordContainer}>
               <Text style={styles.forgotPasswordText}>Forgot password?</Text>
             </TouchableOpacity>
           </Link>
-          
+
           <Button
             title="Log In"
             onPress={handleLogin}
@@ -109,25 +108,25 @@ export default function LoginScreen() {
             style={styles.loginButton}
           />
         </View>
-        
+
         <Divider text="Or continue with" />
-        
+
         <View style={styles.socialContainer}>
           <SocialButton
             provider="google"
-            onPress={() => handleSocialLogin('google')}
-            loading={socialLoading === 'google'}
+            onPress={() => handleSocialLogin("google")}
+            loading={socialLoading === "google"}
             style={styles.socialButton}
           />
-          
+
           <SocialButton
             provider="facebook"
-            onPress={() => handleSocialLogin('facebook')}
-            loading={socialLoading === 'facebook'}
+            onPress={() => handleSocialLogin("facebook")}
+            loading={socialLoading === "facebook"}
             style={styles.socialButton}
           />
         </View>
-        
+
         <View style={styles.signupContainer}>
           <Text style={styles.signupText}>Don't have an account?</Text>
           <Link href="/register" asChild>
@@ -135,6 +134,7 @@ export default function LoginScreen() {
               title="Sign Up"
               variant="text"
               style={styles.signupButton}
+              onPress={() => {}}
             />
           </Link>
         </View>
@@ -154,11 +154,11 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.md,
   },
   headerContainer: {
-    alignItems: 'center',
+    alignItems: "center",
     marginBottom: theme.spacing.xl,
   },
   headerText: {
-    fontSize: theme.typography.fontSize['2xl'],
+    fontSize: theme.typography.fontSize["2xl"],
     fontFamily: theme.typography.fontFamily.bold,
     color: theme.colors.dark.text.primary,
     marginTop: theme.spacing.md,
@@ -168,13 +168,13 @@ const styles = StyleSheet.create({
     fontSize: theme.typography.fontSize.md,
     fontFamily: theme.typography.fontFamily.regular,
     color: theme.colors.dark.text.secondary,
-    textAlign: 'center',
+    textAlign: "center",
   },
   formContainer: {
     marginBottom: theme.spacing.xl,
   },
   forgotPasswordContainer: {
-    alignSelf: 'flex-end',
+    alignSelf: "flex-end",
     marginTop: -theme.spacing.xs,
     marginBottom: theme.spacing.lg,
   },
@@ -193,9 +193,9 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.sm,
   },
   signupContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
     marginTop: theme.spacing.xl,
   },
   signupText: {

@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View, ScrollView, StatusBar } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import VaultSummary from "@/components/VaultSummary";
-import { Button } from "@/src/components/ui";
+import { Button } from "@/components/ui";
 import { Link } from "expo-router";
 import VaultHeader from "@/components/VaultHeader";
 import ReleaseHistory from "@/components/ReleaseHistory";
@@ -26,6 +26,7 @@ export default function VaultScreen() {
               title="Lock New Funds"
               variant="primary"
               style={styles.lockButton}
+              onPress={() => {}}
             />
           </Link>
         </View>

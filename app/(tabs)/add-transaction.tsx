@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { View } from "@/components/Themed";
-import { Button } from "@/src/components/ui";
+import { Button } from "../../components/ui";
 
 const categories = [
   { id: "1", name: "Groceries", icon: "🛒", color: "#10B981" },

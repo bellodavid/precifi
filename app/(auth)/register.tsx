@@ -9,9 +9,9 @@ import {
   Divider, 
   SocialButton, 
   Logo 
-} from '../../src/components/ui';
-import theme from '../../src/theme';
-import { useAuth } from '../../src/hooks/useAuth';
+} from '../../components/ui';
+import theme from '../../theme';
+import { useAuth } from '../../hooks/useAuth';
 
 export default function RegisterScreen() {
   const router = useRouter();
@@ -45,7 +45,7 @@ export default function RegisterScreen() {
     if (!name || !email || !password || !confirmPassword) return;
     
     if (validateForm()) {
-      await register({ name, email, password });
+      await register(name, email, password);
     }
   };
 
@@ -183,6 +183,7 @@ export default function RegisterScreen() {
               title="Log In"
               variant="text"
               style={styles.loginButton}
+              onPress={() => {}}
             />
           </Link>
         </View>

@@ -7,8 +7,8 @@ import {
   Container, 
   TextInput, 
   Logo 
-} from '../../src/components/ui';
-import theme from '../../src/theme';
+} from '../../components/ui';
+import theme from '../../theme';
 
 export default function ResetPasswordScreen() {
   const router = useRouter();
